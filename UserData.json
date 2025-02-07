@@ -1,0 +1,13 @@
+[
+    {
+        "username": "DhruvishK",
+        "email": "dk132@example.com",
+        "address": {
+            "street": "123 Maple Street",
+            "city": "Toronto",
+            "zipcode": "12345-1234"
+        },
+        "phone": "1-123-456-7890",
+        "website": "https://johndoe.com"
+    }
+]
