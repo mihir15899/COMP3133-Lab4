@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -8,16 +10,26 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const MONGO_URI = "mongodb+srv://kananidhruvish:U19hBm2J26De7JYG@cluster0.rqioa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+// Load MongoDB URI from .env
+const MONGO_URI = process.env.MONGO_URI;
 
+if (!MONGO_URI) {
+    console.error("❌ MongoDB URI is missing! Please check your .env file.");
+    process.exit(1); // Stop server if no DB connection string
+}
+
+// Connect to MongoDB
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('✅ MongoDB Connected'))
+    .catch(err => {
+        console.error("❌ MongoDB Connection Error:", err);
+        process.exit(1); // Exit if database connection fails
+    });
+
+// User Routes
 app.use('/users', userRoutes);
 
-const PORT = 8081;
+const PORT = process.env.PORT || 8081; // Use .env port if available
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
